@@ -50,6 +50,13 @@ case "$1" in
             hw-reporter \
             sh -c 'ls -la /data'
         ;;
+    report_server)
+        mkdir -p data
+        docker run --rm \
+            -p 8080:80 \
+            -v "$(pwd)/data:/usr/share/nginx/html:ro" \
+            nginx:alpine
+        ;;
     *)
         echo "Неизвестная комнада"
         exit 1
