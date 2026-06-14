@@ -25,6 +25,31 @@ case "$1" in
             -v "$(pwd)/data:/data" \
             hw-reporter
         ;;
+    structure)
+        find . \
+            -not -path "./.git*" \
+            -not -path "./node_modules*" \
+            | sort
+        ;;
+    clear_data)
+        mkdir -p data
+        find data -maxdepth 1 -type f \
+            \( -name "*.csv" -o -name "*.html" \) -delete
+        ;;
+    inside_generator)
+        mkdir -p data
+        docker run --rm \
+            -v "$(pwd)/data:/data" \
+            hw-generator \
+            sh -c 'ls -la /data'
+        ;;
+    inside_reporter)
+        mkdir -p data
+        docker run --rm \
+            -v "$(pwd)/data:/data" \
+            hw-reporter \
+            sh -c 'ls -la /data'
+        ;;
     *)
         echo "Неизвестная комнада"
         exit 1
